@@ -35,4 +35,25 @@ function M.insertGuard()
     print("Header guard inserted: " .. guard)
 end
 
+function M.setup(opts)
+    local pattern = { "*.h", "*.hpp" }
+
+    -- NOTE: Keybinding
+    -- for inserting the MACRO file
+    vim.mapping.set({ "n", "v" }, "<C-g>", M.insertGuard, { pattern = pattern })
+
+    if opts.mappings then
+        for map in opts.mappings do
+            local mode, mapping, funct, other = pairs(map)
+            vim.keymap.set(mode, mapping, funct, other)
+        end
+    end
+    -- NOTE: AUTOCOMMANDS
+    -- inset Guard for a C C++ header
+    vim.api.nvim_create_autocmd("BufNewFile", {
+        pattern = { "*.h", "*.hpp" },
+        callback = require "HeaderGuard".insertGuard
+    })
+end
+
 return M;
