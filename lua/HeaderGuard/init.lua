@@ -23,13 +23,10 @@ function M.insertGuard()
     vim.api.nvim_buf_set_lines(0, 0, 0, false, {
         "#ifndef " .. guard,
         "#define " .. guard,
-        "",
-        "",
     })
 
     local line_count = vim.api.nvim_buf_line_count(0)
     vim.api.nvim_buf_set_lines(0, line_count, line_count, false, {
-        "",
         "#endif"
     })
     print("Header guard inserted: " .. guard)
@@ -40,7 +37,7 @@ function M.setup(opts)
 
     -- NOTE: Keybinding
     -- for inserting the MACRO file
-    vim.mapping.set({ "n", "v" }, "<C-g>", M.insertGuard, { pattern = pattern })
+    vim.mapping.set({ "n", "v", "V", "t" }, "<C-g>", M.insertGuard, { pattern = pattern })
 
     if opts.mappings then
         for map in opts.mappings do
